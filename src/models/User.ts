@@ -1,16 +1,14 @@
-import { model, Schema, Document } from 'mongoose';
-
-import { Service } from './Service';
+import { model, Schema, Document, ObjectId } from 'mongoose';
 
 interface User extends Document {
   email: string;
-  password_hash: string;
-  services: Service[];
+  hash: string;
+  services: ObjectId[];
 }
 
 const UserSchema = new Schema({
   email: String,
-  password_hash: String,
+  hash: String,
   services: [
     {
       type: Schema.Types.ObjectId,
