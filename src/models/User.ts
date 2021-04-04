@@ -7,8 +7,15 @@ interface User extends Document {
 }
 
 const UserSchema = new Schema({
-  email: String,
-  hash: String,
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  hash: {
+    type: String,
+    required: true,
+  },
   services: [
     {
       type: Schema.Types.ObjectId,

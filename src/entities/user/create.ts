@@ -36,17 +36,35 @@ export async function createUser(user: UserProps) {
 
   const hash = await uhash(password);
 
-  const { _id } = await UserModel.create({
-    email,
-    hash,
-  });
+  let uid: any;
 
-  if (!_id) {
+  try {
+    const { _id } = await UserModel.create({
+      email,
+      hash,
+    });
+
+    uid = _id;
+  } catch ({ code }) {
+    if (code === 11000) {
+      throw {
+        error: 'Email already exists',
+        code: 403,
+      };
+    }
+
+    throw {
+      error: 'Unexpected error',
+      code: 500,
+    };
+  }
+
+  if (!uid) {
     throw {
       error: 'Could not create user',
       code: 500,
     };
   }
 
-  return _id;
+  return uid;
 }

@@ -12,7 +12,7 @@ export async function addService(
 
   if (!user || !_id) {
     throw {
-      message: 'User or service not found',
+      error: 'User or service not found',
       code: 403,
     };
   }

@@ -9,7 +9,7 @@ export async function login(email: string, password: string) {
 
   if (!_id) {
     throw {
-      message: 'Email or password wrong',
+      error: 'Wrong email or password',
       code: 403,
     };
   }
@@ -18,7 +18,7 @@ export async function login(email: string, password: string) {
 
   if (!correctPassword) {
     throw {
-      message: 'Email or password wrong',
+      error: 'Wrong email or password',
       code: 403,
     };
   }

@@ -30,7 +30,7 @@ export async function createService(
 
   if (!_id) {
     throw {
-      message: 'Could not create server',
+      error: 'Could not create server',
       code: 500,
     };
   }
