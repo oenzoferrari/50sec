@@ -9,7 +9,7 @@ import Text from "../../components/Text";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
-import { Container, InputContainer } from "./styles";
+import { Container, InputContainer } from "../../styles";
 import { cleanCookie } from "../../util/cookies";
 
 export default function Vault() {
