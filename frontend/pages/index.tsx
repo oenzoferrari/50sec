@@ -1,93 +1,70 @@
-import axios from "axios";
-import { decode } from "jsonwebtoken";
-
 import { useEffect, useState } from "react";
-import { getCookie } from "react-use-cookie";
+
 import { toast } from "react-toastify";
+import { useTheme } from "styled-components";
+
+import { call as callApi } from "../api/50sec";
+
+import Text from "../components/Text";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 import {
   ActionOption,
-  Button,
   Container,
-  FormChooseContainer,
-  Input,
+  FormSelection,
   InputContainer,
-  Subtitle,
-  Title,
 } from "../styles";
 
 export default function Home() {
+  const { colors } = useTheme();
+
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [loginSelected, setloginSelected] = useState<boolean>(true);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmation, setConfirmation] = useState<string>("");
 
-  const [payload, setPayload] = useState<string | { [key: string]: any }>();
+  useEffect(() => {
+    setEmail("");
+    setPassword("");
+    setConfirmation("");
+  }, [loginSelected]);
 
   useEffect(() => {
-    console.log(payload);
-
-    if (payload) {
-      alert("Logged In!");
+    if (error) {
+      setError(false);
     }
-  }, [payload]);
-
-  function handleEmail({ target }) {
-    setEmail(target.value);
-  }
-
-  function handlePassword({ target }) {
-    setPassword(target.value);
-  }
-
-  function handleConfirmation({ target }) {
-    setConfirmation(target.value);
-  }
+  }, [email, password, confirmation]);
 
   async function handleLogin() {
-    try {
-      await axios.post(
-        "http://localhost:4000/user/login",
-        {
-          email,
-          password,
-        },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.error);
-      }
+    setLoading(true);
+    const result = await callApi("post", "/user/login", {
+      email,
+      password,
+    });
+    setLoading(false);
 
-      console.log(error);
-
+    if (result === "error") {
+      setError(true);
       return;
     }
-
-    const token = getCookie("token");
-
-    setPayload(decode(token));
   }
 
   async function handleRegister() {
-    try {
-      await axios.post(
-        "http://localhost:4000/user",
-        {
-          email,
-          password,
-          confirmation,
-        },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.error);
-      }
+    setLoading(true);
+    const result = await callApi("post", "/user", {
+      email,
+      password,
+      confirmation,
+    });
+    setLoading(false);
 
-      console.log(error);
-
+    if (result === "error") {
+      setError(true);
       return;
     }
 
@@ -96,13 +73,15 @@ export default function Home() {
 
   return (
     <Container>
-      <Title>50sec</Title>
+      <Text type="title" weight="bold" color={colors.primary}>
+        50sec
+      </Text>
 
-      <Subtitle>
+      <Text type="subtitle" align="center" color={colors.subtitle}>
         Securely store and generate passwords in a zero knowledge database
-      </Subtitle>
+      </Text>
 
-      <FormChooseContainer>
+      <FormSelection>
         <ActionOption
           selected={loginSelected}
           onClick={() => setloginSelected(true)}
@@ -116,37 +95,39 @@ export default function Home() {
         >
           Sign Up
         </ActionOption>
-      </FormChooseContainer>
+      </FormSelection>
 
       <InputContainer>
         <Input
+          error={error}
           placeholder="email"
           type="email"
           value={email}
-          onChange={handleEmail}
+          onChangeText={setEmail}
         />
 
         <Input
+          error={error}
           placeholder="password"
           type="password"
           value={password}
-          onChange={handlePassword}
+          onChangeText={setPassword}
         />
 
-        {!loginSelected && (
-          <Input
-            placeholder="confirm password"
-            type="password"
-            value={confirmation}
-            onChange={handleConfirmation}
-          />
-        )}
+        <Input
+          error={error}
+          placeholder="confirm password"
+          type="password"
+          value={confirmation}
+          onChangeText={setConfirmation}
+          hidden={loginSelected}
+        />
 
-        {loginSelected ? (
-          <Button onClick={handleLogin}>Login</Button>
-        ) : (
-          <Button onClick={handleRegister}>Sign Up</Button>
-        )}
+        <Button
+          loading={loading}
+          onClick={loginSelected ? handleLogin : handleRegister}
+          text={loginSelected ? "Login" : "Sign Up"}
+        />
       </InputContainer>
     </Container>
   );
