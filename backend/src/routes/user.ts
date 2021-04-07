@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     return res.status(code).send({ error });
   }
 
-  return res.status(201).send();
+  return res.sendStatus(201);
 });
 
 router.post('/login', async (req, res) => {
@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
     return res.status(403).send({ error: 'Missing fields' });
   }
 
-  let sessionArgs: any;
+  let sessionArgs;
 
   try {
     sessionArgs = await login(email, password);
@@ -49,11 +49,9 @@ router.post('/login', async (req, res) => {
     return res.status(code).send({ error });
   }
 
-  const jwt = createSession(sessionArgs);
+  res.cookie('token', createSession(sessionArgs));
 
-  res.cookie('token', jwt);
-
-  return res.status(200).send();
+  return res.sendStatus(200);
 });
 
 export default router;

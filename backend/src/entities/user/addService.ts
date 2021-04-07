@@ -8,16 +8,16 @@ export async function addService(
   serviceId: string | ObjectId
 ) {
   const user = await UserModel.findById(userId);
-  const { _id } = await ServiceModel.findById(serviceId);
+  const service = await ServiceModel.findById(serviceId);
 
-  if (!user || !_id) {
+  if (!user || !service) {
     throw {
       error: 'User or service not found',
       code: 403,
     };
   }
 
-  user.services.push(_id);
+  user.services.push(service._id);
 
   await user.save();
 }

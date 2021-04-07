@@ -10,16 +10,25 @@ interface UserProps {
 
 interface UncipheredService {
   name: string;
-  login: string;
+  login?: string;
   password: string;
 }
 
 export async function getAll(userIdentification: UserProps) {
   const { id, userKey } = userIdentification;
 
-  const { services } = await UserModel.findById(id, null, {
+  const user = await UserModel.findById(id, null, {
     populate: 'services',
   });
+
+  if (!user) {
+    throw {
+      error: 'User not found',
+      code: 404,
+    };
+  }
+
+  const { services } = user;
 
   const uncypheredServices: UncipheredService[] = services.map((service) => {
     const _service = (service as unknown) as Service;

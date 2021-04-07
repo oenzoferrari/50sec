@@ -70,10 +70,16 @@ router.get('/', async (req, res) => {
     return res.status(code).send({ error });
   }
 
-  const services = await getAll({
-    id: payload.uid,
-    userKey: payload.userKey,
-  });
+  let services;
+
+  try {
+    services = await getAll({
+      id: payload.uid,
+      userKey: payload.userKey,
+    });
+  } catch ({ code, error }) {
+    return res.status(code).send({ error });
+  }
 
   return res.send({ services });
 });
