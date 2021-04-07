@@ -16,6 +16,13 @@ export function createSession(payload: Payload) {
 
   payload.userKey = cipher;
 
+  if (!key) {
+    throw {
+      error: 'Missing validation',
+      code: 500,
+    };
+  }
+
   return sign(payload, key, {
     expiresIn: '1h',
   });

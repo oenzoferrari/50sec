@@ -9,6 +9,13 @@ const key = process.env.JWT_SIGNING_KEY;
 export async function verifyToken(token: string) {
   let content: Payload;
 
+  if (!key) {
+    throw {
+      error: 'Missing validation',
+      code: 500,
+    };
+  }
+
   try {
     content = verify(token, key) as Payload;
   } catch {
