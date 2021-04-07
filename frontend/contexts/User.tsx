@@ -16,12 +16,14 @@ interface UserState {
   uid: string;
   secret: string;
   authenticated: boolean;
+  token: string;
 }
 
 const initialState: UserState = {
   uid: undefined,
   secret: undefined,
   authenticated: false,
+  token: undefined,
 };
 
 const UserContext = createContext<UserState>(initialState);
@@ -38,6 +40,7 @@ function Provider({ children }: { children: ReactNode }) {
         authenticated: false,
         uid: undefined,
         secret: undefined,
+        token: jwt,
       });
 
       cleanCookie();
@@ -51,6 +54,7 @@ function Provider({ children }: { children: ReactNode }) {
       uid,
       secret: userKey,
       authenticated: true,
+      token: jwt,
     });
   }, [jwt]);
 

@@ -20,7 +20,6 @@ import {
 
 export default function Home() {
   const { colors } = useTheme();
-  const { authenticated } = useAuth();
 
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,12 +41,6 @@ export default function Home() {
       setError(false);
     }
   }, [email, password, confirmation]);
-
-  useEffect(() => {
-    if (authenticated) {
-      alert("Auth!");
-    }
-  }, [authenticated]);
 
   async function handleLogin() {
     setLoading(true);

@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
 
 import UserProvider from "../contexts/User";
+import RoutingProvider from "../contexts/Routing";
 
 import theme from "../themes/theme";
 
@@ -24,7 +25,9 @@ function MyApp({ Component, pageProps }) {
 
       <GlobalStyle />
       <UserProvider>
-        <Component {...pageProps} />
+        <RoutingProvider>
+          <Component {...pageProps} />
+        </RoutingProvider>
       </UserProvider>
 
       <ToastContainer />
