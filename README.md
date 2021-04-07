@@ -1,6 +1,6 @@
 # 50sec
 #### Video Demo:  https://youtu.be/9nmyVIbDnQM
-#### Description: A safe way to store and generate strong passwords in the Cloud
+#### Description: A safe way to store and generate strong passwords in the Cloud. This project makes use of two-way cyphering and hashing techinics to safely handle passwords in the Cloud. All the client-side authentication is handled by JWT tokens, and React Contexts to listen to cookies changing every 100ms. The database chosen was MongoDB, the frontend framework was React (Next.js) and the backend was built entirely in Node.js
 
 <br/>
 
