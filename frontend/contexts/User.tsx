@@ -5,9 +5,10 @@ import {
   useEffect,
   useContext,
 } from "react";
+
 import { decode } from "jsonwebtoken";
 
-import { AuthPayload } from "../api/50sec";
+import { call as callApi, AuthPayload } from "../api/50sec";
 
 import { isTokenExpired } from "../util/jwt";
 import { checkCookies, cleanCookie } from "../util/cookies";
@@ -33,9 +34,20 @@ function Provider({ children }: { children: ReactNode }) {
   const [jwt, setJwt] = useState<string>("");
 
   useEffect(() => {
+    handleTokenRefresh();
+  }, [jwt]);
+
+  async function handleTokenRefresh() {
     const payload = decode(jwt) as AuthPayload;
 
-    if (!payload || isTokenExpired(payload.exp)) {
+    const result = await callApi("get", "/user/verify", null);
+
+    if (
+      !payload ||
+      isTokenExpired(payload.exp) ||
+      result == "error" ||
+      !result.data.auth
+    ) {
       setUserState({
         authenticated: false,
         uid: undefined,
@@ -56,7 +68,7 @@ function Provider({ children }: { children: ReactNode }) {
       authenticated: true,
       token: jwt,
     });
-  }, [jwt]);
+  }
 
   function cookieListener() {
     const token = checkCookies();
