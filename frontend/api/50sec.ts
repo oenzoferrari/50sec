@@ -35,3 +35,10 @@ export async function call(method: HTTPMethod, endpoint: string, payload: any) {
 
   return data;
 }
+
+export interface AuthPayload {
+  uid: string;
+  userKey: string;
+  iat: number;
+  exp: number;
+}

@@ -14,8 +14,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 function Button({ text, loading, onClick }: ButtonProps) {
   const { colors } = useTheme();
 
-  console.log(loading);
-
   return (
     <B onClick={onClick} disabled={loading}>
       {loading ? (

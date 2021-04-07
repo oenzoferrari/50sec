@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "styled-components";
 
+import { useAuth } from "../contexts/User";
+
 import { call as callApi } from "../api/50sec";
 
 import Text from "../components/Text";
@@ -18,6 +20,7 @@ import {
 
 export default function Home() {
   const { colors } = useTheme();
+  const { authenticated } = useAuth();
 
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,6 +42,12 @@ export default function Home() {
       setError(false);
     }
   }, [email, password, confirmation]);
+
+  useEffect(() => {
+    if (authenticated) {
+      alert("Auth!");
+    }
+  }, [authenticated]);
 
   async function handleLogin() {
     setLoading(true);
@@ -103,7 +112,7 @@ export default function Home() {
           placeholder="email"
           type="email"
           value={email}
-          onChangeText={setEmail}
+          textChanged={setEmail}
         />
 
         <Input
@@ -111,7 +120,7 @@ export default function Home() {
           placeholder="password"
           type="password"
           value={password}
-          onChangeText={setPassword}
+          textChanged={setPassword}
         />
 
         <Input
@@ -119,7 +128,7 @@ export default function Home() {
           placeholder="confirm password"
           type="password"
           value={confirmation}
-          onChangeText={setConfirmation}
+          textChanged={setConfirmation}
           hidden={loginSelected}
         />
 

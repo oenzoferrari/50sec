@@ -2,9 +2,11 @@ import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
 
-import GlobalStyle from "../styles/GlobalStyles";
+import UserProvider from "../contexts/User";
 
 import theme from "../themes/theme";
+
+import GlobalStyle from "../styles/GlobalStyles";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-activity/lib/Dots/Dots.css";
@@ -21,7 +23,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <GlobalStyle />
-      <Component {...pageProps} />
+      <UserProvider>
+        <Component {...pageProps} />
+      </UserProvider>
 
       <ToastContainer />
     </ThemeProvider>
