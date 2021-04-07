@@ -10,9 +10,9 @@ const theme: DefaultTheme = {
     onPrimary: "#FFFFFF",
   },
   typography: {
-    titleSize: "96px",
-    subtitleSize: "14px",
-    textSize: "14px",
+    titleSize: "128px",
+    subtitleSize: "18px",
+    textSize: "16px",
     buttonTextSize: "16px",
   },
 };
