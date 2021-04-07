@@ -3,7 +3,8 @@ import { Router } from 'express';
 import { createUser } from '../entities/user/create';
 import { login } from '../entities/user/login';
 
-import { createSession } from '../entities/session/create';
+import { createSession, Payload } from '../entities/session/create';
+import { verifyToken } from '../entities/session/verify';
 
 const router = Router();
 
@@ -52,6 +53,22 @@ router.post('/login', async (req, res) => {
   res.cookie('token', createSession(sessionArgs));
 
   return res.sendStatus(200);
+});
+
+router.get('/verify', async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.send({ auth: false });
+  }
+
+  try {
+    await verifyToken(token);
+  } catch ({ code, error }) {
+    return res.send({ auth: false });
+  }
+
+  return res.send({ auth: true });
 });
 
 export default router;
