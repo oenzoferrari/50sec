@@ -33,13 +33,7 @@ function Provider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const payload = decode(jwt) as AuthPayload;
 
-    if (!payload) {
-      return;
-    }
-
-    const { uid, userKey, exp } = payload;
-
-    if (isTokenExpired(exp)) {
+    if (!payload || isTokenExpired(payload.exp)) {
       setUserState({
         authenticated: false,
         uid: undefined,
@@ -50,6 +44,8 @@ function Provider({ children }: { children: ReactNode }) {
 
       return;
     }
+
+    const { uid, userKey } = payload;
 
     setUserState({
       uid,
