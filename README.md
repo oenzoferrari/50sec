@@ -37,3 +37,12 @@ The frontend is entirely built on React, for reasons being: it's my comfortable 
 The backend is entirely on Node.js (using typescript), for the same reason.
 
 The database was a mongoDB instance, running on Docker.
+
+## How to run
+
+You'll need:
+
+- mongoDB instance listening to 27017 port. 
+- create .env file on the backend root with 3 secrets
+- run yarn to install packages on both frontend and backend
+- run yarn dev on both, to initialize the applications
